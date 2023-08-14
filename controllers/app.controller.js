@@ -1,6 +1,12 @@
-const {readTopics} = require('../models/app.model')
+const { readTopics } = require('../models/app.model')
+const allEndpoints = require('../endpoints.json')
 
-const getTopics = (request, response, next) => {
+
+const getEndpoints = (request, response) => {
+    response.status(200).send({allEndpoints})
+}
+
+const getTopics = (request, response) => {
     readTopics()
     .then((topics) => {
         response.status(200).send({topics})
@@ -8,4 +14,4 @@ const getTopics = (request, response, next) => {
 }
 
 
-module.exports = {getTopics}
+module.exports = { getEndpoints, getTopics }
