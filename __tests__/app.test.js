@@ -35,6 +35,8 @@ describe('app', () => {
                 })
             })
         })
+    })
+    describe('GET error handling', () => {
         test('404 : responds with an error message when path does not exist', () => {
             return request(app)
             .get('/api/topicss')
