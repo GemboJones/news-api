@@ -1,4 +1,4 @@
-const { readTopics } = require('../models/app.model')
+const { readTopics, readArticles } = require('../models/app.model')
 const allEndpoints = require('../endpoints.json')
 
 
@@ -13,5 +13,15 @@ const getTopics = (request, response) => {
     })
 }
 
+const getArticles = (request, response, next) => {
+    const { article_id } = request.params
+    readArticles(article_id)
+    .then((article) => {
+        response.status(200).send({article})
+    })
+    .catch((err) => {
+        next(err)
+    })
+}
 
-module.exports = { getEndpoints, getTopics }
+module.exports = { getEndpoints, getTopics, getArticles }
