@@ -1,4 +1,4 @@
-const { readTopics, readArticles } = require('../models/app.model')
+const { readTopics, fetchArticles, fetchArticlesbyId } = require('../models/app.model')
 const allEndpoints = require('../endpoints.json')
 
 
@@ -13,15 +13,24 @@ const getTopics = (request, response) => {
     })
 }
 
-const getArticles = (request, response, next) => {
+const getArticlesById = (request, response, next) => {
     const { article_id } = request.params
-    readArticles(article_id)
+    fetchArticlesbyId(article_id)
     .then((article) => {
         response.status(200).send({article})
     })
     .catch((err) => {
+        console.log(err)
         next(err)
     })
 }
 
-module.exports = { getEndpoints, getTopics, getArticles }
+const getArticles = (request, response) => {
+    fetchArticles()
+    .then((allArticles) => {
+        response.status(200).send({allArticles})
+    })
+}
+
+
+module.exports = { getEndpoints, getTopics, getArticles, getArticlesById }
