@@ -1,9 +1,10 @@
 const app = require('../app.js')
 const request = require('supertest');
-
+const endpointsFile = require('../endpoints.json')
 const connection = require('../db/connection.js')
 const seed = require('../db/seeds/seed.js')
 const data = require('../db/data/test-data/index.js')
+
 
 
 afterAll(() => {
@@ -37,10 +38,21 @@ describe('app', () => {
         })
     })
     describe('GET error handling', () => {
-        test('404 : responds with an error message when path does not exist', () => {
+        test('404 : responds with an error when path does not exist', () => {
             return request(app)
             .get('/api/topicss')
             .expect(404)
+        })
+    })
+    describe('GET /api', () => {
+        test('200 : responds an object describing all the available endpoints on your API', () => {
+            return request(app)
+            .get('/api')
+            .expect(200)
+            .then((response) => {
+                const { allEndpoints } = response.body
+                expect(allEndpoints).toEqual(endpointsFile)                
+            })            
         })
     })
 })
