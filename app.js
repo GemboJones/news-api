@@ -13,7 +13,6 @@ app.get('/api/articles/:article_id', getArticlesById)
 app.get('/api/articles', getArticles)
 
 app.use((err, request, response, next) => {
-    console.log(err)
     if (err.status && err.msg) {
         response.status(err.status).send({ msg: err.msg });
     } else {
@@ -22,7 +21,6 @@ app.use((err, request, response, next) => {
 })
 
 app.use((err, request, response, next) => {
-    console.log(err)
     if (err.code === '22P02') {
         response.status(400).send({msg: 'bad request'})
     } else {
