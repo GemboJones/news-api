@@ -28,6 +28,10 @@ app.use((err, request, response, next) => {
     }
 })
 
+app.use((_, response) => {
+    response.status(404).send({ msg: 'not found'})
+})
+
 app.use((err, request, response, next) => {
     response.status(500).send({msg: 'internal server error'})
 })
