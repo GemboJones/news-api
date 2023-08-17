@@ -102,7 +102,6 @@ describe('app', () => {
             .expect(200)
             .then((response) => {
                 const { allArticles } = response.body
-                console.log(response.body)
                 expect(allArticles).toBeInstanceOf(Array)
                 expect(allArticles).toHaveLength(13)
                 allArticles.forEach((article) => {
