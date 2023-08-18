@@ -164,9 +164,6 @@ describe('app', () => {
                 const { comments } = response.body
                 expect(comments).toBeInstanceOf(Array)
                 expect(comments).toHaveLength(0)
-
-                const { msg } = response.body
-                expect(msg).not.toBe('not found')
             })           
         })
         test('404 : responds with a 404 message when the path is valid but the article_id does not exist', () => {

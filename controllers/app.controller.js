@@ -44,7 +44,6 @@ const getCommentsByArticleId = (request, response, next) => {
         response.status(200).send({comments})
     })
     .catch((err) => {
-        console.log(err)
         next(err)
     })
 }

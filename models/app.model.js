@@ -32,48 +32,16 @@ const fetchArticles = () => {
 }
 
 const fetchCommentsByArticleId = (article_id) => {
-    return db.query(`SELECT articles.article_id, comment_id, comments.votes, comments.created_at, comments.author, comments.article_id 
-    FROM articles 
-    LEFT JOIN comments ON articles.article_id = comments.article_id 
-    WHERE articles.article_id = $1`, [article_id])
-    // fetchArticlesbyId(article_id)
-    .then(({rows}) => {
-        if (rows.length === 0) {
-            return Promise.reject({ status: 404, msg: 'not found' })
-        } else {
-            return db.query(`SELECT comments.comment_id, comments.votes, comments.created_at, comments.author, comments.body, comments.article_id 
-            FROM articles
-            LEFT JOIN comments ON articles.article_id = comments.article_id
-            WHERE comments.article_id = $1
+    return fetchArticlesbyId(article_id).then(() => {
+            return db.query(`SELECT comment_id, votes, created_at, author, body, article_id 
+            FROM comments
+            WHERE article_id = $1
             ORDER BY created_at DESC;`, [article_id])
             .then(({rows}) => {           
                 return rows
             })
-        }
     })     
 }
 
 module.exports = { readTopics, fetchArticlesbyId, fetchArticles, fetchCommentsByArticleId }
 
-
-/* const fetchCommentsByArticleId = (article_id) => {
-    const checkArticleIdExists = db.query(
-        'SELECT * FROM comments WHERE article_id = $1;', [article_id]);
-console.log(checkArticleIdExists, '<<< in model')
-        if (checkArticleIdExists.rows.length === 0) {
-            return Promise.reject({ status: 404, msg: 'not found' })
-        } else {
-
-
-    return db.query(`SELECT comments.comment_id, comments.votes, comments.created_at, comments.author, comments.body, comments.article_id FROM articles 
-    LEFT JOIN comments ON articles.article_id = comments.article_id
-    WHERE comments.article_id = $1
-    ORDER BY created_at DESC;`, [article_id])
-    .then(({rows}) => {
-        console.log(rows, '<<< in model')  
-        return rows
-    })
-}
-}
-    
-    */
