@@ -127,4 +127,57 @@ describe('app', () => {
             })  
         })
     })
+
+
+
+
+    describe('POST /api/articles/:article_id/comments', () => {
+        test('201 : Request body accepts an object with the following properties username and body, and responds with the posted comment.', () => {
+
+            const newComment = {
+                username: 'butter_bridge',
+                body: "comment comment comment"
+              }
+            return request(app)
+            .post('/api/articles/5/comments')
+            .send(newComment)
+            .expect(201)
+            .then((response) => {
+                const {commentAdded} = response.body
+                expect(commentAdded).toEqual({
+                    body: "comment comment comment"
+                })
+            })            
+        })
+        test('404 : responds with a 404 message when the author (username) is valid but does not exist.', () => {
+
+            const newComment = {
+                username: 'peter_file',
+                body: "comment comment comment, so many comments"
+              }
+            return request(app)
+            .post('/api/articles/5/comments')
+            .send(newComment)
+            .expect(404)
+            .then((response) => {
+                const { msg } = response.body
+                expect(msg).toBe('username not found')
+            })            
+        })
+        test('400 : responds with a 400 message when the article_id is invalid', () => {
+
+            const newComment = {
+                username: 'icellusedkars',
+                body: "comment comment comment, so many comments"
+              }
+            return request(app)
+            .post('/api/articles/hi/comments')
+            .send(newComment)
+            .expect(400)
+            .then((response) => {
+                const { msg } = response.body
+                expect(msg).toBe('bad request')
+            })                  
+        })
+    })
 })

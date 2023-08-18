@@ -1,8 +1,11 @@
 const express = require('express')
-const { getEndpoints, getTopics, getArticles, getArticlesById } = require('./controllers/app.controller')
+const { getEndpoints, getTopics, getArticles, getArticlesById, postArticleComment } = require('./controllers/app.controller')
 const { commentData } = require('./db/data/test-data')
 
 const app = express()
+
+app.use(express.json())
+
 
 app.get('/api', getEndpoints)
 
@@ -12,9 +15,21 @@ app.get('/api/articles/:article_id', getArticlesById)
 
 app.get('/api/articles', getArticles)
 
+
+app.post('/api/articles/:article_id/comments', postArticleComment)
+
+
 app.use((err, request, response, next) => {
     if (err.status && err.msg) {
         response.status(err.status).send({ msg: err.msg });
+    } else {
+        next(err)
+    }
+})
+
+app.use((err, request, response, next) => {
+    if (err.code === '23503') {
+        response.status(404).send({msg: 'username not found'})
     } else {
         next(err)
     }

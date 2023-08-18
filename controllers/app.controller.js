@@ -1,4 +1,11 @@
-const { readTopics, fetchArticles, fetchArticlesbyId } = require('../models/app.model')
+const { readTopics, fetchArticles, fetchArticlesbyId
+
+
+
+, insertArticleComment
+
+
+} = require('../models/app.model')
 const allEndpoints = require('../endpoints.json')
 
 
@@ -32,4 +39,30 @@ const getArticles = (request, response) => {
 }
 
 
-module.exports = { getEndpoints, getTopics, getArticles, getArticlesById }
+
+
+
+const postArticleComment = (request, response, next) => {
+
+    const commentToAdd = request.body
+    const {article_id} = request.params
+
+    insertArticleComment(commentToAdd, article_id)
+    .then((commentAdded) => {
+        response.status(201).send({commentAdded})
+    })
+    .catch((err) => {
+        next(err)
+    })
+    
+}
+
+
+
+module.exports = { getEndpoints, getTopics, getArticles, getArticlesById
+
+
+
+, postArticleComment
+
+}
