@@ -1,11 +1,4 @@
-const { readTopics, fetchArticles, fetchArticlesbyId
-
-
-
-, insertArticleComment
-
-
-} = require('../models/app.model')
+const { readTopics, fetchArticles, fetchArticlesbyId, insertArticleComment } = require('../models/app.model')
 const allEndpoints = require('../endpoints.json')
 
 
@@ -38,10 +31,6 @@ const getArticles = (request, response) => {
     })
 }
 
-
-
-
-
 const postArticleComment = (request, response, next) => {
 
     const commentToAdd = request.body
@@ -59,10 +48,4 @@ const postArticleComment = (request, response, next) => {
 
 
 
-module.exports = { getEndpoints, getTopics, getArticles, getArticlesById
-
-
-
-, postArticleComment
-
-}
+module.exports = { getEndpoints, getTopics, getArticles, getArticlesById, postArticleComment}

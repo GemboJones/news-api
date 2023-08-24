@@ -39,10 +39,14 @@ const fetchArticles = () => {
 const insertArticleComment = (commentToAdd, article_id) => {
     const {username, body} = commentToAdd
 
-    return db.query(`INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING body`, [username, body, article_id])
-    .then(({rows}) => {
-        return rows[0]
-    })
+    return fetchArticlesbyId(article_id).then(() => {
+        return db.query(`INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING body`, [username, body, article_id])
+        .then(({rows}) => {
+            return rows[0]
+        })
+    })    
 }
+
+
 
 module.exports = { readTopics, fetchArticlesbyId, fetchArticles, insertArticleComment }

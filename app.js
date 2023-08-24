@@ -1,6 +1,5 @@
 const express = require('express')
 const { getEndpoints, getTopics, getArticles, getArticlesById, postArticleComment } = require('./controllers/app.controller')
-const { commentData } = require('./db/data/test-data')
 
 const app = express()
 
@@ -29,14 +28,14 @@ app.use((err, request, response, next) => {
 
 app.use((err, request, response, next) => {
     if (err.code === '23503') {
-        response.status(404).send({msg: 'username not found'})
+        response.status(404).send({msg: 'not found'})
     } else {
         next(err)
     }
 })
 
 app.use((err, request, response, next) => {
-    if (err.code === '22P02') {
+    if (err.code === '22P02' || err.code === '23502') {
         response.status(400).send({msg: 'bad request'})
     } else {
         next(err)
