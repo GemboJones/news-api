@@ -113,7 +113,7 @@ describe('app', () => {
                 expect(article).toHaveProperty('votes', expect.any(Number))
                 expect(article).toHaveProperty('article_img_url', expect.any(String))
                 expect(article).not.toHaveProperty('body')
-                expect(article).toHaveProperty('comment_count', expect.any(String))
+                expect(article).toHaveProperty('comment_count', expect.any(Number))
                 })
             })            
         })
@@ -125,6 +125,64 @@ describe('app', () => {
                 const { allArticles } = response.body
                 expect(allArticles).toBeSortedBy('created_at', { descending: true,})
             })  
+        })
+    })
+    describe('GET /api/articles/:article_id/comments', () => {
+        test('200 : responds with an array of comments for the given article_id of which each comment should have the following properties; comment_id, votes, created_at, author, body, article_id', () => {
+            return request(app)
+            .get('/api/articles/5/comments')
+            .expect(200)
+            .then((response) => {
+                const { comments } = response.body 
+                expect(comments).toBeInstanceOf(Array)
+                expect(comments).toHaveLength(2);
+
+                comments.forEach((comment) => {
+                expect(comment).toHaveProperty('comment_id', expect.any(Number))
+                expect(comment).toHaveProperty('votes', expect.any(Number))
+                expect(comment).toHaveProperty('created_at', expect.any(String))
+                expect(comment).toHaveProperty('author', expect.any(String))
+                expect(comment).toHaveProperty('body', expect.any(String))
+                expect(comment).toHaveProperty('article_id', expect.any(Number))
+                })
+            })           
+        })
+        test('200 : the articles should be sorted by date with the most recent first.', () => {
+            return request(app)
+            .get('/api/articles/1/comments')
+            .expect(200)
+            .then((response) => {
+                const { comments } = response.body
+                expect(comments).toBeSortedBy('created_at', { descending: true,})
+            })  
+        })
+        test('200 : responds with an empty array if the article_id exists but there are no comments for that article_id', () => {
+            return request(app)
+            .get('/api/articles/2/comments')
+            .expect(200)
+            .then((response) => {
+                const { comments } = response.body
+                expect(comments).toBeInstanceOf(Array)
+                expect(comments).toHaveLength(0)
+            })           
+        })
+        test('404 : responds with a 404 message when the path is valid but the article_id does not exist', () => {
+            return request(app)
+            .get('/api/articles/52/comments')
+            .expect(404)
+            .then((response) => {
+                const { msg } = response.body
+                expect(msg).toBe('not found')
+            })           
+        })
+        test('400 : responds with a 400 message when the article_id is invalid', () => {
+            return request(app)
+            .get('/api/articles/hi/comments')
+            .expect(400)
+            .then((response) => {
+                const { msg } = response.body
+                expect(msg).toBe('bad request')
+            })           
         })
     })
 })
