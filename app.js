@@ -1,8 +1,9 @@
 const express = require('express')
-const { getEndpoints, getTopics, getArticles, getArticlesById, getCommentsByArticleId } = require('./controllers/app.controller')
-const { commentData } = require('./db/data/test-data')
+const { getEndpoints, getTopics, getArticles, getArticlesById, getCommentsByArticleId, postArticleComment } = require('./controllers/app.controller')
 
 const app = express()
+app.use(express.json())
+
 
 app.get('/api', getEndpoints)
 
@@ -14,6 +15,9 @@ app.get('/api/articles', getArticles)
 
 app.get('/api/articles/:article_id/comments', getCommentsByArticleId)
 
+app.post('/api/articles/:article_id/comments', postArticleComment)
+
+
 app.use((err, request, response, next) => {
     if (err.status && err.msg) {
         response.status(err.status).send({ msg: err.msg });
@@ -23,7 +27,15 @@ app.use((err, request, response, next) => {
 })
 
 app.use((err, request, response, next) => {
-    if (err.code === '22P02') {
+    if (err.code === '23503') {
+        response.status(404).send({msg: 'not found'})
+    } else {
+        next(err)
+    }
+})
+
+app.use((err, request, response, next) => {
+    if (err.code === '22P02' || err.code === '23502') {
         response.status(400).send({msg: 'bad request'})
     } else {
         next(err)
