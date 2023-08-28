@@ -184,11 +184,9 @@ describe('app', () => {
                 expect(msg).toBe('bad request')
             })           
         })
-    })      
-          
-    
+    })        
     describe('POST /api/articles/:article_id/comments', () => {
-        test('201 : Request body accepts an object with the following properties; username and body, and responds with the posted comment.', () => {
+        test('201 : Request body accepts an object with the properties username and body, and responds with the posted comment.', () => {
 
             const newComment = {
                 username: 'butter_bridge',
@@ -205,7 +203,6 @@ describe('app', () => {
                 })
             })            
         })
-
         test('201 : Request body accepts an object with unnecessary properties but still adds a comment if the correct properties are present as well, and responds with the posted comment.', () => {
 
             const newComment = {
@@ -224,7 +221,6 @@ describe('app', () => {
                 })
             })            
         })
-
         test('404 : responds with a 404 message when the author (username) is valid but does not exist.', () => {
 
             const newComment = {
@@ -270,7 +266,7 @@ describe('app', () => {
                 expect(msg).toBe('bad request')
             })                  
         })
-        test('400 : responds with a 400 message when the request body is missing required field(s), e.g. no username or body properties', () => {
+        test('400 : responds with a 400 message when the request body is missing required data, e.g. no username or body properties', () => {
 
             const newComment = {}
             return request(app)
@@ -281,6 +277,111 @@ describe('app', () => {
                 const { msg } = response.body
                 expect(msg).toBe('bad request')
             })                  
+        })
+    })
+    describe('PATCH /api/articles/:article_id', () => {
+        test('200 : Request body accepts an object with a key-value pair where the value is a number that increases or decreases the articles vote property, and responds with the updated article.', () => {
+
+            const updateArticleVotes = { inc_votes: 20 }
+            return request(app)
+            .patch('/api/articles/1')
+            .send(updateArticleVotes)
+            .expect(200)
+            .then((response) => {
+                const {updatedArticle} = response.body
+                expect(updatedArticle).toHaveProperty('article_id')
+                expect(updatedArticle).toHaveProperty('title')
+                expect(updatedArticle).toHaveProperty('topic')
+                expect(updatedArticle).toHaveProperty('author')
+                expect(updatedArticle).toHaveProperty('body')
+                expect(updatedArticle).toHaveProperty('created_at')
+                expect(updatedArticle).toHaveProperty('votes')
+                expect(updatedArticle).toHaveProperty('article_img_url')
+                expect(updatedArticle.votes).toEqual(120)
+            })            
+        })
+        test('200 : Request body accepts an object with unnecessary properties, but still increases or decreases the articles vote property if the correct key-value pair property is present, and responds with the updated article.', () => {
+
+            const updateArticleVotes = {
+                inc_votes: 35,
+                username: 'butter_bridge',
+                body: "comment comment"
+              }
+
+            return request(app)
+            .patch('/api/articles/3')
+            .send(updateArticleVotes)
+            .expect(200)
+            .then((response) => {
+                const {updatedArticle} = response.body
+                expect(updatedArticle).toHaveProperty('article_id')
+                expect(updatedArticle).toHaveProperty('title')
+                expect(updatedArticle).toHaveProperty('topic')
+                expect(updatedArticle).toHaveProperty('author')
+                expect(updatedArticle).toHaveProperty('body')
+                expect(updatedArticle).toHaveProperty('created_at')
+                expect(updatedArticle).toHaveProperty('votes')
+                expect(updatedArticle).toHaveProperty('article_img_url')
+                expect(updatedArticle.votes).toEqual(35)
+            })           
+        })
+        test('200 : should never return a votes property value less than 0.', () => {
+
+            const updateArticleVotes = { inc_votes: -120 }
+            return request(app)
+            .patch('/api/articles/1')
+            .send(updateArticleVotes)
+            .expect(200)
+            .then((response) => {
+                const {updatedArticle} = response.body
+                expect(updatedArticle.votes).toEqual(0)
+            })            
+        })
+        test('404 : responds with a 404 message when the article_id is valid but does not exist', () => {
+            const updateArticleVotes = { inc_votes: 20 }
+            return request(app)
+            .patch('/api/articles/999')
+            .send(updateArticleVotes)
+            .expect(404)
+            .then((response) => {
+                const { msg } = response.body
+                expect(msg).toBe('not found')
+            })           
+        })
+        test('400 : responds with a 400 message when the article_id is invalid', () => {
+            const updateArticleVotes = { inc_votes: 20 }
+            return request(app)
+            .patch('/api/articles/notAnId')
+            .send(updateArticleVotes)
+            .expect(400)
+            .then((response) => {
+                const { msg } = response.body
+                expect(msg).toBe('bad request')
+            })            
+        })
+        test('400 : responds with a 400 message when the vote property value is invalid (not a number).', () => {
+
+            const updateArticleVotes = { inc_votes: 'notANum' }
+            return request(app)
+            .patch('/api/articles/1')
+            .send(updateArticleVotes)
+            .expect(400)
+            .then((response) => {
+                const { msg } = response.body
+                expect(msg).toBe('bad request')
+            })                   
+        })
+        test('400 : responds with a 400 message when the request body is missing the required property (key-value pair where the value is a number).', () => {
+
+            const updateArticleVotes = {}
+            return request(app)
+            .patch('/api/articles/1')
+            .send(updateArticleVotes)
+            .expect(400)
+            .then((response) => {
+                const { msg } = response.body
+                expect(msg).toBe('bad request')
+            })      
         })
     })
 })

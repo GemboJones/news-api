@@ -54,5 +54,23 @@ const insertArticleComment = (commentToAdd, article_id) => {
     })    
 }
 
+const updateArticleVotes = (article_id, inc_votes) => {
 
-module.exports = { readTopics, fetchArticlesbyId, fetchArticles, fetchCommentsByArticleId, insertArticleComment }
+    return fetchArticlesbyId(article_id)
+    .then((article) => {        
+        const currentVotes = article.votes
+        let newVotes = currentVotes + inc_votes
+        if (currentVotes + inc_votes < 0) {newVotes = 0}
+
+        return db.query(`UPDATE articles 
+        SET votes = $1 
+        WHERE article_id = $2 
+        RETURNING *`, [newVotes, article_id])
+        .then(({rows}) => {
+            return rows[0]
+        })
+    })
+}
+
+
+module.exports = { readTopics, fetchArticlesbyId, fetchArticles, fetchCommentsByArticleId, insertArticleComment, updateArticleVotes }
