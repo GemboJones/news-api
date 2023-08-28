@@ -1,4 +1,4 @@
-const { readTopics, fetchArticles, fetchArticlesbyId, fetchCommentsByArticleId, insertArticleComment } = require('../models/app.model')
+const { readTopics, fetchArticles, fetchArticlesbyId, fetchCommentsByArticleId, insertArticleComment, updateArticleVotes } = require('../models/app.model')
 const allEndpoints = require('../endpoints.json')
 
 
@@ -60,8 +60,20 @@ const postArticleComment = (request, response, next) => {
     .catch((err) => {
         next(err)
     })
-    
+}
+
+const patchArticleVotes = (request, response, next) => {
+    const {inc_votes} = request.body
+    const {article_id} = request.params
+
+    updateArticleVotes(article_id, inc_votes)
+    .then((updatedArticle) => {
+        response.status(200).send({updatedArticle})
+    })
+    .catch((err) => {
+        next(err)
+    })
 }
 
 
-module.exports = { getEndpoints, getTopics, getArticles, getArticlesById, getCommentsByArticleId, postArticleComment }
+module.exports = { getEndpoints, getTopics, getArticles, getArticlesById, getCommentsByArticleId, postArticleComment, patchArticleVotes }
