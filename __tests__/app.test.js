@@ -371,7 +371,7 @@ describe('app', () => {
                 expect(msg).toBe('bad request')
             })                   
         })
-        test('400 : responds with a 400 message when the request body is missing the required property (key-value pair where the value is a number).', () => {
+        test('400 : responds with a 400 message when the request body is missing the required property (body is empty).', () => {
 
             const updateArticleVotes = {}
             return request(app)
@@ -382,6 +382,34 @@ describe('app', () => {
                 const { msg } = response.body
                 expect(msg).toBe('bad request')
             })      
+        })
+    })
+    describe('DELETE /api/comments/:comment_id', () => {
+        test('204 : should delete the given comment by comment_id.', () => {
+
+            return request(app)
+            .delete('/api/comments/1')
+            .expect(204)         
+        })
+        test('404 : responds with a 404 message when the comment_id is valid but does not exist', () => {
+
+            return request(app)
+            .delete('/api/comments/999')
+            .expect(404)
+            .then((response) => {
+                const { msg } = response.body
+                expect(msg).toBe('not found')
+            })                  
+        })
+        test('400 : responds with a 400 message when the comment_id is invalid', () => {
+
+            return request(app)
+            .delete('/api/comments/hi')
+            .expect(400)
+            .then((response) => {
+                const { msg } = response.body
+                expect(msg).toBe('bad request')
+            })                  
         })
     })
 })

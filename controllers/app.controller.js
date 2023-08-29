@@ -1,4 +1,4 @@
-const { readTopics, fetchArticles, fetchArticlesbyId, fetchCommentsByArticleId, insertArticleComment, updateArticleVotes } = require('../models/app.model')
+const { readTopics, fetchArticles, fetchArticlesbyId, fetchCommentsByArticleId, insertArticleComment, updateArticleVotes, removeCommentById } = require('../models/app.model')
 const allEndpoints = require('../endpoints.json')
 
 
@@ -75,5 +75,16 @@ const patchArticleVotes = (request, response, next) => {
     })
 }
 
+const deleteCommentById = (request, response, next) => {
+    const {comment_id} = request.params
+    removeCommentById(comment_id)
+    .then(() => {
+        response.status(204).send()
+    })
+    .catch((err) => {
+        next(err)
+    })
+}
 
-module.exports = { getEndpoints, getTopics, getArticles, getArticlesById, getCommentsByArticleId, postArticleComment, patchArticleVotes }
+
+module.exports = { getEndpoints, getTopics, getArticles, getArticlesById, getCommentsByArticleId, postArticleComment, patchArticleVotes, deleteCommentById }
