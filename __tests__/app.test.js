@@ -190,7 +190,7 @@ describe('app', () => {
 
             const newComment = {
                 username: 'butter_bridge',
-                body: "comment comment comment"
+                body: 'comment comment comment'
               }
             return request(app)
             .post('/api/articles/5/comments')
