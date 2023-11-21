@@ -3,7 +3,7 @@ JavaScript | Express | Node | node-postgres | PostgreSQL
 
 RESTful API resembles a real back-end service (Reddit) and handles articles, topics, comments and user ratings, providing information to the front-end architecture.
 
-The front-end can be viewed here: <a href="https://github.com/GemboJones/fe-nc-news">NC Social News Website</a>
+The front-end can be viewed here: <a href="https://github.com/GemboJones/fe-nc-news">NC Social News Website (front-end)</a>
 
 ## Required to run this project:
 
