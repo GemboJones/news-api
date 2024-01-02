@@ -8,12 +8,12 @@
     "exampleResponse": {
       "topics": [
         {
-        "slug": "coding",
-        "description": "Code is love, code is life"
+          "slug": "coding",
+          "description": "Code is love, code is life"
         },
         {
-        "slug": "football",
-        "description": "FOOTIE!"
+          "slug": "football",
+          "description": "FOOTIE!"
         }
       ]
     }
@@ -32,8 +32,8 @@
           "votes": 0,
           "article_img_url": "https://images.pexels.com/photos/2403392/pexels-photo-2403392.jpeg?w=700&h=700",
           "comment_count": 11
-          },
-          {
+        },
+        {
           "article_id": 12,
           "title": "The battle for Node.js security has only begun",
           "topic": "coding",
@@ -42,7 +42,7 @@
           "votes": 0,
           "article_img_url": "https://images.pexels.com/photos/10845119/pexels-photo-10845119.jpeg?w=700&h=700",
           "comment_count": 7
-          }
+        }
       ]
     }
   },
@@ -98,7 +98,7 @@
     }
   },
   "PATCH /api/articles/:article_id": {
-    "description": "Request body accepts an object with a key-value pair where the value is a number that increases or decreases the articles vote property, and responds with an object of the updated article.",
+    "description": "updates an existing article by article_id. Request body accepts an object with a key-value pair that increases or decreases the vote property, and responds with an object of the updated article.",
     "queries": [],
     "exampleRequest": { "inc_votes": 20 },
     "exampleResponse": {
@@ -112,6 +112,27 @@
         "votes": 20,
         "article_img_url": "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?w=700&h=700"
       }
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes the comment by comment_id"
+  },
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "queries": [],
+    "exampleResponse": {
+      "allUsers": [
+        {
+          "username": "butter_bridge",
+          "name": "jonny",
+          "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+        },
+        {
+          "username": "icellusedkars",
+          "name": "sam",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+        }
+      ]
     }
   }
 }
