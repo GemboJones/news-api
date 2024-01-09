@@ -6,7 +6,7 @@ const getEndpoints = (request, response) => {
     response.status(200).send({allEndpoints})
 }
 
-const getTopics = (request, response) => {
+const getTopics = (request, response, next) => {
     readTopics()
     .then((topics) => {
         response.status(200).send({topics})
@@ -27,12 +27,14 @@ const getArticlesById = (request, response, next) => {
     })
 }
 
-const getArticles = (request, response) => {
-    fetchArticles()
-    .then((allArticles) => {
-        response.status(200).send({allArticles})
+const getArticles = (request, response, next) => {
+    const { topic } = request.query;
+    fetchArticles(topic)
+    .then((articles) => {
+        response.status(200).send({articles})
     })
     .catch((err) => {
+        console.log(err);
         next(err)
     })
 }

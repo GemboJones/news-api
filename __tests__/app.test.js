@@ -101,10 +101,10 @@ describe('app', () => {
             .get('/api/articles')
             .expect(200)
             .then((response) => {
-                const { allArticles } = response.body
-                expect(allArticles).toBeInstanceOf(Array)
-                expect(allArticles).toHaveLength(13)
-                allArticles.forEach((article) => {
+                const { articles } = response.body
+                expect(articles).toBeInstanceOf(Array)
+                expect(articles).toHaveLength(13)
+                articles.forEach((article) => {
                 expect(article).toHaveProperty('article_id', expect.any(Number))
                 expect(article).toHaveProperty('title', expect.any(String))
                 expect(article).toHaveProperty('topic', expect.any(String))
@@ -122,8 +122,8 @@ describe('app', () => {
             .get('/api/articles')
             .expect(200)
             .then((response) => {
-                const { allArticles } = response.body
-                expect(allArticles).toBeSortedBy('created_at', { descending: true,})
+                const { articles } = response.body
+                expect(articles).toBeSortedBy('created_at', { descending: true,})
             })  
         })
     })
@@ -428,4 +428,18 @@ describe('app', () => {
             })
         })
     })
+
+    describe("GET /api/articles (topic query)", () => {
+      test("200 : Should filter articles by a topic given in a query.", () => {
+        return request(app)
+          .get("/api/articles?topic=cats")
+          .expect(200)
+          .then((response) => {
+            const { articles } = response.body;
+             articles.forEach((article) => {
+               expect(article.topic).toBe("cats");
+             });
+          });
+      });
+    });
 })

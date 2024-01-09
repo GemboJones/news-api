@@ -18,8 +18,13 @@ const fetchArticlesbyId = (article_id) => {
     })
 }
 
-const fetchArticles = () => {
-
+const fetchArticles = (topic) => {
+    if (topic) {
+        return db.query(`SELECT * FROM articles WHERE topic = $1`, [topic])
+          .then(({ rows }) => {
+            return rows;
+          });
+    } else {
     return db.query(`SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.created_at, articles.votes, articles.article_img_url, 
     COUNT(comments.comment_id)::INT AS comment_count
     FROM articles
@@ -29,6 +34,7 @@ const fetchArticles = () => {
     .then(({rows}) => {
         return rows
     })
+}
 }
 
 const fetchCommentsByArticleId = (article_id) => {
