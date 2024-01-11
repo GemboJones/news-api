@@ -1,15 +1,15 @@
-# NC Social News (back-end)
+# NC Social News (back-end API)
 
 
 Back-End API for NC Social News, which handles articles, topics, comments and ratings (similar to Reddit) in a PSQL database, providing information to the front-end architecture.
 
-<strong>View the hosted API here: <a href="https://news-api-4x3j.onrender.com/api" target="_blank">NC Social News (back-end) ↗️</a></strong>
+### View hosted back-end: <strong><a href="https://news-api-4x3j.onrender.com/api" target="_blank" rel="noreferrer noopener">NC Social News API ↗️</a></strong>
 
-View the Front-End GitHub Repo here: <a href="https://github.com/GemboJones/fe-nc-news">NC Social News (front-end)</a>
+View Front-End Repo: <a href="https://github.com/GemboJones/fe-nc-news">NC Social News (front-end)</a>
 
 ---
 
-## Setup Instructions
+# Setup Instructions
 ### Requirements:
 <ul>
 <li>Node.js v20.10.0</li>
