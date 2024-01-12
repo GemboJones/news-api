@@ -428,28 +428,28 @@ describe('app', () => {
             })
         })
     })
-    describe("GET /api/articles (topic query)", () => {
-      test("200 : Should filter articles by a topic given in a query.", () => {
-        return request(app)
-          .get("/api/articles?topic=cats")
-          .expect(200)
-          .then((response) => {
-            const { articles } = response.body;
-             articles.forEach((article) => {
-               expect(article.topic).toBe("cats");
-               expect(article).toHaveProperty("article_id", expect.any(Number));
-               expect(article).toHaveProperty("title", expect.any(String));
-               expect(article).toHaveProperty("topic", expect.any(String));
-               expect(article).toHaveProperty("author", expect.any(String));
-               expect(article).toHaveProperty("created_at", expect.any(String));
-               expect(article).toHaveProperty("votes", expect.any(Number));
-               expect(article).toHaveProperty("article_img_url", expect.any(String));
-               expect(article).not.toHaveProperty("body");
-               expect(article).toHaveProperty("comment_count", expect.any(Number));
-             });
-          });
-      });
-    });
+    // describe("GET /api/articles (topic query)", () => {
+    //   test("200 : Should filter articles by a topic given in a query.", () => {
+    //     return request(app)
+    //       .get("/api/articles?topic=cats")
+    //       .expect(200)
+    //       .then((response) => {
+    //         const { articles } = response.body;
+    //          articles.forEach((article) => {
+    //            expect(article.topic).toBe("cats");
+    //            expect(article).toHaveProperty("article_id", expect.any(Number));
+    //            expect(article).toHaveProperty("title", expect.any(String));
+    //            expect(article).toHaveProperty("topic", expect.any(String));
+    //            expect(article).toHaveProperty("author", expect.any(String));
+    //            expect(article).toHaveProperty("created_at", expect.any(String));
+    //            expect(article).toHaveProperty("votes", expect.any(Number));
+    //            expect(article).toHaveProperty("article_img_url", expect.any(String));
+    //            expect(article).not.toHaveProperty("body");
+    //            expect(article).toHaveProperty("comment_count", expect.any(Number));
+    //          });
+    //       });
+    //   });
+    // });
     describe("GET /api/articles/:article_id (including comment_count)", () => {
       test("200 : gets an article by its id and responds with an object containing all properties with the addition of comment_count", () => {
         return request(app)

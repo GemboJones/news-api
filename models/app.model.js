@@ -27,22 +27,22 @@ const fetchArticlesbyId = (article_id) => {
 };
 
 const fetchArticles = (topic) => {
-  if (topic) {
-    return db
-      .query(
-        `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.created_at, articles.votes, articles.article_img_url, 
-    COUNT(comments.comment_id)::INT AS comment_count
-    FROM articles
-    LEFT JOIN comments ON articles.article_id = comments.article_id 
-    WHERE topic = $1
-    GROUP BY articles.article_id
-    ORDER BY created_at DESC`,
-        [topic]
-      )
-      .then(({ rows }) => {
-        return rows;
-      });
-  } else {
+  // if (topic) {
+  //   return db
+  //     .query(
+  //       `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.created_at, articles.votes, articles.article_img_url, 
+  //   COUNT(comments.comment_id)::INT AS comment_count
+  //   FROM articles
+  //   LEFT JOIN comments ON articles.article_id = comments.article_id 
+  //   WHERE topic = $1
+  //   GROUP BY articles.article_id
+  //   ORDER BY created_at DESC`,
+  //       [topic]
+  //     )
+  //     .then(({ rows }) => {
+  //       return rows;
+  //     });
+  // } else {
     return db
       .query(
         `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.created_at, articles.votes, articles.article_img_url, 
@@ -55,7 +55,7 @@ const fetchArticles = (topic) => {
       .then(({ rows }) => {
         return rows;
       });
-  }
+  // }
 };
 
 const fetchCommentsByArticleId = (article_id) => {
