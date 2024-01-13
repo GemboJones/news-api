@@ -80,10 +80,11 @@ const insertArticleComment = (commentToAdd, article_id) => {
   return fetchArticlesbyId(article_id).then(() => {
     return db
       .query(
-        `INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING body`,
+        `INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING article_id, author, body`,
         [username, body, article_id]
       )
       .then(({ rows }) => {
+        console.log(rows);
         return rows[0];
       });
   });

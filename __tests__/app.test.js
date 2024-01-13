@@ -199,8 +199,10 @@ describe('app', () => {
             .then((response) => {
                 const {commentAdded} = response.body
                 expect(commentAdded).toEqual({
-                    body: "comment comment comment"
-                })
+                  article_id: 5,
+                  author: "butter_bridge",
+                  body: "comment comment comment",
+                });
             })            
         })
         test('201 : Request body accepts an object with unnecessary properties but still adds a comment if the correct properties are present as well, and responds with the posted comment.', () => {
@@ -217,8 +219,10 @@ describe('app', () => {
             .then((response) => {
                 const {commentAdded} = response.body
                 expect(commentAdded).toEqual({
-                    body: "comment comment"
-                })
+                  article_id: 5,
+                  author: "butter_bridge",
+                  body: "comment comment",
+                });
             })            
         })
         test('404 : responds with a 404 message when the author (username) is valid but does not exist.', () => {
