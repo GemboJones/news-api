@@ -199,7 +199,7 @@ describe('app', () => {
             .then((response) => {
                 const {commentAdded} = response.body
                 expect(commentAdded).toEqual({
-                  article_id: 5,
+                  comment_id: 19,
                   author: "butter_bridge",
                   body: "comment comment comment",
                 });
@@ -219,7 +219,7 @@ describe('app', () => {
             .then((response) => {
                 const {commentAdded} = response.body
                 expect(commentAdded).toEqual({
-                  article_id: 5,
+                  comment_id: 19,
                   author: "butter_bridge",
                   body: "comment comment",
                 });
